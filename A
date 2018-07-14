@@ -1,0 +1,156 @@
+# applications
+#include<iostream>
+#include<cstdlib>
+#include<cstring>
+using namespace std;
+typedef struct log
+{
+	char mail[10];
+	char pass[10];
+	char s[100];
+	char r[100];
+	//char gender[10];
+	//long int phoneno;
+}log;
+typedef struct node
+{
+     log info;
+     node *pnext;
+}node;
+class data
+{
+	private:
+		    int length;
+		    node *head;
+		    node *curpos;
+		    node *tail;
+	public:
+		    void disp();
+		    void createspace();
+		    void signin(log);
+		    int login();
+		    void receive();
+		    void send();
+};
+log getdetails();
+#include"head.h"
+log getdetails()
+{
+	log in;
+	cout<<"ENTER MAIL:";
+	cin>>in.mail;
+	cout<<"ENTER PASSWORD:";
+	cin>>in.pass;
+	return in;
+}
+void data::signin(log info)
+{
+	node *newnode;
+	newnode=new node;
+	newnode->info=info;
+	newnode->pnext=head->pnext;
+	head->pnext=newnode;
+	length++;
+	cout<<"no of users:"<<length;
+}
+void data::createspace()
+{
+	head=new node;
+	tail=new node;
+	head->pnext=tail;
+	tail->pnext=NULL;
+	curpos=NULL;
+}
+int data::login()
+{
+	log in;
+	node *temp;
+	in=getdetails();
+	temp=head;
+	while(temp!=tail)
+	{
+		if(strcmp(temp->info.mail,in.mail)==0&&strcmp(temp->info.pass,in.pass)==0)
+		  {
+		  cout<<"***AUTHENTICATED***";	
+		  cout<<"\nINBOX:"<<temp->info.r;
+		  return 0;
+		  break;
+	          }
+		else
+		{
+		  temp=temp->pnext;
+		}
+	}
+	cout<<"###no matching pass or mail###";
+	return 1;
+}
+void data::send()
+{
+ log in;
+ char a[100];
+ cout<<"\nENTER MESSAGE:";
+ cin>>in.s;
+ cout<<"\nTo:";
+ cin>>a;
+ node *temp;
+ temp=head;
+ while(temp!=tail)
+ {
+	 if(strcmp(temp->info.mail,a)==0)
+	 {
+           strcpy(temp->info.r,in.s);
+	   cout<<"\nMESSAGE DROPPED";
+	   break;
+	 }
+	 else
+	 {
+           temp=temp->pnext;
+	 }
+ }
+ cout<<"\nno user on the name you have entered";
+}
+void data::disp()
+{
+ node *temp;
+ temp=head;
+ while(temp!=tail)
+ {
+	 cout<<temp->info.mail;
+	 cout<<temp->info.pass;
+	 cout<<temp->info.r;
+	 cout<<temp->info.s;
+	 temp=temp->pnext;
+ }
+}#include"head.h"
+main()
+{
+ log in;
+ data l;
+ int choice,s;
+ l.createspace();
+ do{
+ cout<<"\n\t\t\t**************stephen*************";
+ cout<<"\t\t\t\t\t\n1-signin \n2-login \n3-exit";
+ cout<<"\nenter choice>>";
+ cin>>choice;
+ switch(choice)
+ {
+ case 1:{	 
+         in=getdetails();
+         l.signin(in);
+	 break;
+	}
+ case 2:{
+	 s=l.login();
+	 if(s==0){
+	 cout<<"\nCOMPOSE MESSAGE";
+	 l.send();}
+	 break;
+	}
+ case 3:{
+        l.disp();
+        exit(1);
+	break;
+	}
+ }}while(choice>0&&choice<4);
+}
