@@ -1,0 +1,33 @@
+# applications
+#include<stdio.h>
+//#include<fstream.h>
+#include<stdlib.h>
+main(){
+FILE *fp;
+char filename[20],ch;
+int a=1,b,nfiles;
+printf("enter the no of files");
+scanf("%d",&nfiles);
+FILE *files[nfiles];
+for (int i = 1; i <= nfiles; i++)
+{
+	fp=fopen("strauss.ino","r");
+    printf("enter the file name");
+    scanf("%s",&filename);
+    files[i] = fopen(filename, "w");
+//ch=fgetc(fp);
+while(!feof(fp))
+{  // fputc(ch,files[i]);
+	ch=fgetc(fp);
+	if(ch=='1'){
+		(int)ch;
+		ch=ch+i;
+		putw(ch,files[i]);}
+	else
+	   fputc(ch,files[i]);
+}
+fclose(fp);
+fclose(files[i]);
+//fp=fopen(filename,"r");
+}
+}
